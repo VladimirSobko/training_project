@@ -19,23 +19,54 @@ const calculator = function(){
 	let x;
 	function setValue(value){
 		x = value;
-		console.log(`установленное значение = ${x} `)
+		console.log(`установленное значение = ${x} `);
 	}
 	function add(value){
-		value = x + value;
-		return value;
+		x = x + value;
+		return x;
 	}
-	function 
+	function multiply (value){
+		x = x * value;
+		return x;
+	}
+	function subtract (value){
+		x = x - value;
+		return x;
+	}
+	function divide(value){
+		x = x / value;
+		return x;
+	}
+	function degree(value){
+		x = x * x;
+		return x;
+	}
+	function getValue(value){
+		x = x.toFixed(2);// метод toFixed возвращает строку, приводим к чилу через унарный плюс.
+		x = +x;
+		let result = x;
+		return result;
+	}
+
 	return { setValue: setValue,
 			 add: add, 
+			 multiply: multiply,
+			 subtract: subtract,
+			 divide: divide,
+			 degree: degree,
+			 getValue: getValue,
+
 
 
 	};
 }();
 calculator.setValue(10);// модуль.установитьЗначение(10); // значение = 10
 console.log(calculator.add(5));// модуль.прибавить(5); // значение += 5
-// модуль.умножить(2); // значение *= 2
-// модуль.узнатьЗначение(); // вывести в консоль 30 (здесь надо округлить)
+console.log(calculator.multiply(2));// модуль.умножить(2); // значение *= 2
+console.log(calculator.divide(7)); /// 7.5
+console.log(calculator.getValue());// модуль.узнатьЗначение(); // вывести в консоль 30 (здесь надо округлить)
+console.log(calculator.setValue(10).degree(2).getValue());
+
 	</script>
 	
 </body>
