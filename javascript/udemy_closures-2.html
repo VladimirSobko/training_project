@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>js</title>
+	<title>closures</title>
 </head>
 <body>
 	<script type="text/javascript">
@@ -20,6 +20,7 @@ const calculator = function(){
 	function setValue(value){
 		x = value;
 		console.log(`установленное значение = ${x} `);
+		return this;
 	}
 	function add(value){
 		x = x + value;
@@ -39,7 +40,7 @@ const calculator = function(){
 	}
 	function degree(value){
 		x = x * x;
-		return x;
+		return this;
 	}
 	function getValue(value){
 		x = x.toFixed(2);// метод toFixed возвращает строку, приводим к чилу через унарный плюс.
@@ -56,16 +57,16 @@ const calculator = function(){
 			 degree: degree,
 			 getValue: getValue,
 
-
-
 	};
 }();
+
 calculator.setValue(10);// модуль.установитьЗначение(10); // значение = 10
 console.log(calculator.add(5));// модуль.прибавить(5); // значение += 5
 console.log(calculator.multiply(2));// модуль.умножить(2); // значение *= 2
 console.log(calculator.divide(7)); /// 7.5
 console.log(calculator.getValue());// модуль.узнатьЗначение(); // вывести в консоль 30 (здесь надо округлить)
 console.log(calculator.setValue(10).degree(2).getValue());
+
 
 	</script>
 	

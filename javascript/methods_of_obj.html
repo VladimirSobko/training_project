@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>methods of Obj</title>
+</head>
+<body>
+	<script type="text/javascript">
+		////////////неглубокое копирование через  метод Object.assign({}, ...); так же возможно  через данный метод выполнять совмещение объектов в один.
+
+const users = {
+	name : "Den",
+	age: 15,
+	work:{
+		job:["plumber"]
+	},
+};
+
+const job = {
+	name: "Mykola",
+	salary: "100$",
+	workers: 10,
+}
+
+let newObj = Object.assign({}, job, users );
+newObj = Object.assign({}, users)
+console.log(newObj === users);
+
+/////////// JSON ///////////////
+const obj = {
+	name : "Den",
+	age: 15,
+	work:{
+		job:["plumber"]
+	},
+};
+
+const obj2 = {
+	name: "Mykola",
+	salary: "100$",
+	workers: 10,
+}
+
+let objJSON = JSON.stringify(obj); //приведет к формату JSON
+let resultObj = JSON.parse(objJSON); // распарсит, получим глубокую копию объекта USERS.
+console.log(resultObj);
+
+//////// Object.keys();
+// Данный метод выводит все ключи в виде массива.
+let keys = Object.keys(obj);
+
+console.log(keys);
+
+///// метод values///////////
+//Данный метод возвращает массив со значениями переданного в параметры объекта.
+let values = Object.values(users);
+console.log(values); 
+
+//////метод entries////
+//возвращает массив массивов где каждым элементом является пара ключ - значение.
+let entries = Object.entries(users);
+console.log(entries);
+
+/////// Метод Object.fromEntries() преобразует список пар ключ-значение в объект.
+let fromEntries = Object.fromEntries([["name", "Ben"], ["surname", "Pupkin"]]);
+console.log(fromEntries);
+	</script>
+	
+</body>
+</html>
