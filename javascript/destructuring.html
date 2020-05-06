@@ -6,7 +6,79 @@
 </head>
 <body>
 	<script type="text/javascript">
+		const user = {
+			name: "Vova",
+			surname: "Sobko",
+			age: 28,
+			job:"no",
+			hobby :{ sport: "boxing"
+			}
+		};
+
+		// const {name: myName, age: years = 29, job = "developer"} = user;
+		// console.log(myName, years);
+
+		const {
+		 	hobby: { sport},
+		} = user;
+		// console.log(sport);
+
+		const arr = ["red", "black", "green", "blue"];
+		const [r, , g,] =  arr; // можем указывать любые произвольные имена, но главное по порядку. Можно пропускать элементы для этого необходимо ставить запятую.
+		// console.log(r, g); // в консоль выводит только red и green.
+		const newArr = ["hello world", ["key", "value"]];
+		const[,[key,value]] = newArr; // та же можем указаывать любые произвольные имена., таким образом можем вытянуть что то из вложенных массивов.
+		// console.log(key, value);
+
+		////// operator REST и Spread/////////
+
+		///rest//// дает возможность получить остаток от массива или используется при копировании массива.
+		const[color1, ...otherColors] = arr;
+		// console.log(" первый элемент массива -", color1);
+		// console.log("остаток от массива после оператора rest = ",otherColors);
+		const[...arrOfColors] = arr;
+		// console.log(arrOfColors);
+		/////spread///////////////////
+		const newArray = [...arr]; // скопирует массив
+		// console.log(...newArray); // при использовании spread  выведет в консоль каждый элемент через запятую, а не как массив.
+
+		const names = ["Vova", "Petr", "Den"];
+		const surnames =["Ivanov", "Petrov"];
+		const surnameAndNames = [ ...surnames, ...names];
+		// console.log(surnameAndNames); //склеиваем два массива в один.
+
+		const newUser = {...user, age: 29}; // изменяем значение возраста на 29.
+		// console.log(newUser);
+
+		const{
+			hobby:{
+				sport:{boxing},
+			}
+		} = newUser;
+		// console.log(sport);
 		
+		////////////деструктуризация для объекта передаваемого в функции.
+
+		function myPerson({name = "N", surname = "S"} = {}){ // устанавливаем значения по умолчанию для name и surname  и для объекта по умолчанию пустой объект, что бы не было ошибки.
+			console.log(name, surname);
+		}
+		myPerson(user); //Vova Sobko.
+
+		////// 
+		function foo(x , y, ...others){
+			console.log(arguments);
+			const[...arg] = arguments; //при помощи деструктуризации получаем массив всех аргументов переданных в функцию.
+			console.log(arg); //выводим в консоль массив аргументов.
+			console.log(others); // при помощи оператора REST получаем отдельным массивом остаток от переданных параметров.
+		}
+		foo(1, 2, 3, 4, 5);
+
+////// пример использования оператора rest для раскладывания элементов массива когда в качесте параметра передается массив.
+		const numbers = [1, 2, 3, 4, 5];
+		function foo2(x, y, r){
+			console.log(x, y, r) ///1, 2, 3
+		}
+		foo2(...numbers); 
 	</script>
 	
 </body>
