@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>homework Destrucuring</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Используя rest оператор и деструктуризацию, создать функцию, которая принимает любое количество аргументов и возвращает объект, содержащий первый аргумент и массив из остатка:
+	function getDestructObj( x, ...other){
+		const obj = {x, other};
+		console.log(obj);
+		return obj;
+
+	};
+	getDestructObj("a", "b", "c", "d");
+
+
+// Организовать функцию getInfo, которая принимает объект вида
+// { name: ..., info: { employees: [...], partners: [ … ] } }
+// и выводит в консоль имя (если имени нет, показывать ‘Unknown’) и первые две компании из массива partners
+const organisation = {
+						name: 'Google',
+						info: { employees: ["Vlad", "Olga"], partners: ['Microsoft', 'Facebook', 'Xing'] 
+						}
+};
+
+
+function getInfo({name = "unknown", info:{employees, partners} }){
+	console.log("name = ", name);
+	const {info:first, second} = organisation;
+	const [firstCompany, secondCompany, ...other] = partners;
+	console.log("partners = ", firstCompany, secondCompany);
+}
+getInfo(organisation);
+
+// getInfo(organisation); →
+
+// Name: Google
+
+// Partners: Microsoft Facebook
+
+	</script>
+	
+</body>
+</html>
