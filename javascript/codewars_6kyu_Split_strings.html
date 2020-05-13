@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>codewars</title>
+</head>
+<body>
+  <script type="text/javascript">
+        //6 kyu Split Strings
+    // Complete the solution so that it splits the string into pairs of two characters. 
+    // If the string contains an odd number of characters then it should replace the 
+    // missing second character of the final pair with an underscore ('_').
+    // Examples:
+    // solution('abc') // should return ['ab', 'c_']
+    // solution('abcdef') // should return ['ab', 'cd', 'ef']
+
+    function solution(str){
+    let newArr = [];
+      str = str.split("");
+      for(i = 0; i < str.length; i++){
+        if(typeof str[i] === "string" && typeof str[i + 1] === "string" ){
+          newArr.push(str[i] + str[i + 1]);
+          i++;
+        } else if(typeof str[i + 1] === "undefined"){
+          newArr.push(str[i] + "_");
+        }
+       }
+       return newArr;
+    };
+    console.log(solution("abcdefg"));
+  </script>
+</body>
+</html>
