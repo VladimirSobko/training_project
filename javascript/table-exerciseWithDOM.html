@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>table of users</title>
+</head>
+<body>
+	<div></div>
+	<script type="text/javascript">
+
+	let div = document.querySelector("div");
+	div.classList.add("wrapper");
+
+	const users = [
+	  {
+	    "_id": "5d220b10e8265cc978e2586b",
+	    "isActive": true,
+	    "balance": 2853.33,
+	    "age": 20,
+	    "name": "Buckner Osborne",
+	    "gender": "male",
+	    "company": "EMPIRICA",
+	    "email": "bucknerosborne@empirica.com",
+	    "phone": "+1 (850) 411-2997",
+	    "registered": "2018-08-13T04:28:45 -03:00",
+			"nestedField": { total: 300 }
+	  },
+	  {
+	    "_id": "5d220b10144ef972f6c2b332",
+	    "isActive": true,
+	    "balance": 1464.63,
+	    "age": 38,
+	    "name": "Rosalie Smith",
+	    "gender": "female",
+	    "company": "KATAKANA",
+	    "email": "rosaliesmith@katakana.com",
+	    "phone": "+1 (943) 463-2496",
+	    "registered": "2016-12-09T05:15:34 -02:00",
+			"nestedField": { total: 400 }
+	  },
+	  {
+	    "_id": "5d220b1083a0494655cdecf6",
+	    "isActive": false,
+	    "balance": 2823.39,
+	    "age": 40,
+	    "name": "Estrada Davenport",
+	    "gender": "female",
+	    "company": "EBIDCO",
+	    "email": "estradadavenport@ebidco.com",
+	    "phone": "+1 (890) 461-2088",
+	    "registered": "2016-03-04T03:36:38 -02:00",
+			"nestedField": { total: 200 }
+	  },
+	  {
+	    "_id": "5d220b1083a0494655cdecf6",
+	    "isActive": false,
+	    "balance": 5000,
+	    "age": 35,
+	    "name": "Yuriy Dud",
+	    "gender": "male",
+	    "company": "EBIDCO",
+	    "email": "Yuriy@ebidco.com",
+	    "phone": "+1 (890) 461-2088",
+	    "registered": "2016-03-04T03:36:38 -02:00",
+	        "nestedField": { total: 200 }
+	  },
+	   {
+	    "_id": "5d220b10144ef972f6c2b332",
+	    "isActive": true,
+	    "balance": 4000.63,
+	    "age": 38,
+	    "name": "Boris Britva",
+	    "gender": "male",
+	    "company": "MadRussians",
+	    "email": "borya@gmail.com",
+	    "phone": "+1 (943) 463-2496",
+	    "registered": "2016-12-09T05:15:34 -02:00",
+			"nestedField": { total: 400 }
+	  },
+	];
+
+let schema = { item : "#", name: "NAME", email: "EMAIL", balance: "BALANCE"};
+let keysOfschema = Object.values(schema);
+let table = document.createElement("table");
+document.querySelector("div").appendChild(table);
+let th = table.createTHead();
+th.style.backgroundColor = "bisque";
+let thRow = th.insertRow();
+table.style.width = "70%";
+table.style.border = "solid";
+let tb = table.createTBody();
+let tbRow = tb.insertRow();
+let cell;
+let rows;
+let sum = 0;
+let count = 0;
+
+for(let j = 0; j <= users.length; j++){
+    if(j > 0){
+        tbRow = tb.insertRow();
+    }
+    for(let i = 0; i <= keysOfschema.length; i++){
+        if(count < keysOfschema.length){
+            count++;
+            cell = thRow.insertCell();
+            cell.textContent = keysOfschema[i];
+        }
+        if(tbRow){
+            rows = tbRow.insertCell();
+            if(keysOfschema[i] == "#" && j + 1 <= users.length ){
+                rows.textContent = j + 1;
+   
+            }
+            if(keysOfschema[i] == "NAME" && typeof users[j] !== "undefined" ){
+                rows.textContent = users[j].name;
+                if(typeof users[j] === "undefined"){
+                    rows.textContent = " ";
+                }
+            }
+            if(keysOfschema[i] == "EMAIL" && typeof users[j] !== "undefined" ){
+                rows.textContent = users[j].email;
+            }
+            if(keysOfschema[i] == "BALANCE" && typeof users[j] !== "undefined" ){
+                rows.textContent = users[j].balance;
+            }else if (keysOfschema[i] == "BALANCE" && typeof users[j] === "undefined"){
+                rows.textContent = `Total balance ${sum}`;
+            }
+        }  
+    }
+    if(typeof users[j] !== "undefined" ){
+         sum = sum + users[j].balance;
+    }
+};
+	</script>
+	
+</body>
+</html>
