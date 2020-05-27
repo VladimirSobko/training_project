@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>event exercises</title>
+</head>
+<body>
+	<button id="btn-msg" data-text = 'Custom message' >Show message</button>
+<button id="btn-generate">Generate item</button>
+<p><strong id="tag">Tag:</strong></p>
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+
+<script type="text/javascript">
+
+ // 1.По нажатию на кнопку "btn-msg" должен появиться алерт с тем текстом который находится в атрибуте data-text у кнопки.
+
+ let btnForMsg = document.querySelector("#btn-msg");
+ btnForMsg.addEventListener('click', function(){
+ 	//btnForMsg = btnForMsg.dataset;      // решение через dataset 
+ 	console.log(btnForMsg.getAttribute("data-text"));
+ 	alert(btnForMsg.getAttribute("data-text")); // custom message
+ });
+
+ // 2. При наведении указателя мыши на "btn-msg", кнопка становится красной; когда указатель мыши покидает кнопку, она становится прежнего цвета. Цвет менять можно через добавление класса.
+
+ let btnForFocus = document.getElementById("btn-msg");
+ btnForFocus.addEventListener('mouseenter', function(event){
+ 	if(event){
+ 		btnForFocus.style.background = "red";
+ 	}
+ 	if(btnForFocus.addEventListener('mouseleave', event =>{
+ 		btnForFocus.style.background = "none";
+ 		setTimeout(function(){
+ 			btnForFocus.style.background = "grey";
+ 		}, 1000);
+ 		})
+ 	){
+ 	}
+ });
+
+ // 3. При нажатии на любой узел документа показать в элементе с id=tag имя тега нажатого элемента.
+ let tag = document.querySelector("*");
+ tag.addEventListener("click", e => {
+ 	if(event && event.target.hasAttribute("id")){
+ 		console.log(event.target);
+ 	}
+ });
+
+// 4. При нажатии на кнопку btn-generate добавлять в список ul элемент списка Li с текстом Item + порядковый номер Li по списку, т.е Item 3, Item 4 и т.д 
+
+let btnForGener = document.querySelector("#btn-generate");
+let ul = document.querySelector("ul");
+let ulLength = ul.querySelectorAll("li").length;
+btnForGener.addEventListener('click', event => {
+ let li = document.createElement("li");
+ ul.appendChild(li);
+ if(ul.appendChild(li)){
+ 	ulLength += 1;
+ }
+ li.textContent = `item ${ulLength}`;
+})
+
+</script>
+
+
+	
+</body>
+</html>
