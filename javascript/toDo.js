@@ -9,7 +9,7 @@ const tasks = [
     _id: '1x234z',
     completed: false,
     body:
-      'изучение JavaScript в онлайн академии Udemy каждый день',
+      'Изучение JavaScript в онлайн академии Udemy каждый день',
       title: 'JavaScript',
   },
   {
@@ -29,24 +29,40 @@ const tasks = [
   },
 ];
 
- document.body.style.background = "#6464af";
+ 
+
 
 
 
 (function(arrOfTasks) {
-  const objOfTask = arrOfTasks.reduce((acc, task) => {
+  let objOfTask = arrOfTasks.reduce((acc, task) => {
     acc[task._id] = task;
     return acc;},{}); // получаем обьъект обьъектов каждой отдельногй задачи, для удобьства обьращения, где ключ это айди.
-
-
 
   //elements UI
   const listContainer = document.querySelector(".tasks-list-section .list-group");
   const form = document.forms['addTask']; //данное свойсто выводит коллекцию всех форм на странице по ее атрибуту, а именно имени.
   const inputTitle = form.elements['title']; // при помощи свойства elements  по айди или имени можно получить доступ к каждому элементу
   const inputBody = form.elements['body'];
+ Object.keys(objOfTask).length;
+  
+  //style
+  document.body.style.background = "#6464af";
 
-  let articleOfEmpty;
+  //блок с кнопками сортировки выполненых и не выполненых задач
+  const btnShowUnCompletedTasks = document.createElement("button");
+  btnShowUnCompletedTasks.textContent = "Show uncompleted tasks";
+  btnShowUnCompletedTasks.classList.add("btn", "btn-primary");
+  btnShowUnCompletedTasks.style.margin = "10px 0px 20px 10px";
+  let firstDiv = document.querySelector("#firstDiv");
+  firstDiv.insertAdjacentElement('afterbegin', btnShowUnCompletedTasks);
+
+  const btnShowAllTasks = document.createElement("button");
+  btnShowAllTasks.textContent = "Show all tasks";
+  btnShowAllTasks.classList.add("btn", "btn-primary");
+  btnShowAllTasks.style.margin = "10px 0px 20px 310px";
+  firstDiv = document.querySelector("#firstDiv");
+  firstDiv.insertAdjacentElement('afterbegin', btnShowAllTasks);
 
   renderTasks(objOfTask);
 
@@ -54,18 +70,36 @@ const tasks = [
   form.addEventListener('submit', onFormSubmit);
   listContainer.addEventListener('click', onDeleteHandler); //вешаем обработчик на весь список который динамически генерируется
   listContainer.addEventListener('click', completedTask);
+  btnShowUnCompletedTasks.addEventListener('click', showUnCompletedTasks);
+  btnShowAllTasks.addEventListener('click', showAllTasks);
 
+// при нажатии на кнопку "show all Task" делает видимым все задачи, которые были скрыты при нажатии на кнопку "show uncompleted task" 
+  function showAllTasks(event){
+    if(event){
+       renderTasks(objOfTask);
+    } 
+  };
 
+  function showUnCompletedTasks(event){
+    if(event){
+      renderTasks(objOfTask, true);
+    }
+  };
+
+ 
 //В каждый элемент li добавить кнопку которая будет делать задачу выполненной. завершенные задачи должны быть подсвечены любым цветом.
 function completedTask(event){ // реализуем функционал который при нажатии на task completed  отмечает задачу зеленым цветом.
-    if(event.target.classList.contains('btn-success')){   
+    if(event.target.classList.contains('btn-success') ){   
      event.target.closest('li').style.background = "#6aec6a";
+
      const parentElem = event.target.closest('[data-task-id]');
+     parentElem.dataset.completed = true;
      const id = parentElem.dataset.taskId;
+      objOfTask[id].completed = true;
    }
 };
 
-  function renderTasks(taskList){
+  function renderTasks(taskList, showUnCompletedTask){
     if(!taskList){
       console.error("передайте список задач");
       return;
@@ -73,9 +107,20 @@ function completedTask(event){ // реализуем функционал кот
     const fragment = document.createDocumentFragment();
     Object.values(taskList).forEach(task => {
       const li = listItemTemplate(task);
-      fragment.appendChild(li);
+      if(task.completed === true){
+        li.style.background = "#6aec6a";
+      }
+      if(task.completed === false && showUnCompletedTask === true){
+        fragment.appendChild(li); 
+      } else if (!showUnCompletedTask){
+        fragment.appendChild(li);
+      }        
     });
+    listContainer.innerHTML = "";
     listContainer.appendChild(fragment);
+     if(Object.keys(objOfTask).length === 0){
+      ifNoTask();
+    }
   }
 
   function listItemTemplate({_id, title, body} = {}){ // функция принимает одну задачу (task) для удобьства мы сразу деструктурируем обьъект task и выводим ключи
@@ -105,9 +150,9 @@ function completedTask(event){ // реализуем функционал кот
     li.appendChild(deleteBtn);
     li.appendChild(article);
     li.appendChild(completedBtn);
-
     return li;
   }
+
 
   function onFormSubmit(event){
     event.preventDefault();
@@ -120,12 +165,13 @@ function completedTask(event){ // реализуем функционал кот
     }
     const task = createNewTask(titleValue, bodyValue);
     const listItem = listItemTemplate(task);
-    if(task){
-      articleOfEmpty.remove();
-    }
     
     listContainer.insertAdjacentElement('afterbegin', listItem);
     form.reset(); //данный метод очищает поле формы
+    let infoDiv = document.querySelector(".infoDiv");
+    infoDiv.innerHTML = "";
+
+
   }
 
  function createNewTask(title, body, completed){
@@ -135,7 +181,6 @@ function completedTask(event){ // реализуем функционал кот
     completed: false,
     _id: `task-${Math.random()}`,
   };
-
   objOfTask[newTask._id] = newTask;
   return {...newTask}; //для будущего использования возвращаю копию объекта через оператор rest.
  }
@@ -155,6 +200,7 @@ function completedTask(event){ // реализуем функционал кот
   element.remove();
   count--;
   if(count === 0){
+
     return ifNoTask();
 
   }
@@ -165,28 +211,37 @@ function completedTask(event){ // реализуем функционал кот
     const parent = event.target.closest('[data-task-id]');
     const id = parent.dataset.taskId;
     const confirmed = deleteTask(id); //получаем статус 
-    deleteTaskFromHtml(confirmed, parent);
+    // deleteTaskFromHtml(confirmed, parent);
+    renderTasks(objOfTask, false);
   } 
  }
 
  function ifNoTask(){ // реализуем функцию, если отсутствуют задачи в массиве task или все задачи удаленны, выводить надпись "задачи отсутствуют"
-    let firstDiv = document.querySelector('#firstDiv');
-    articleOfEmpty = document.createElement("span");
+    let firstDiv = document.querySelector("#firstDiv");
+    let infoDiv = document.querySelector(".infoDiv");
+    infoDiv.innerHTML = "";
+    let articleOfEmpty = document.createElement("span");
     articleOfEmpty.textContent = "В вашем списке задачи отсутствуют.";
-    firstDiv.appendChild(articleOfEmpty);
+    infoDiv.appendChild(articleOfEmpty);
     articleOfEmpty.style.marginLeft = "320px";
     articleOfEmpty.style.fontSize = "large";
     articleOfEmpty.style.fontWeight = "500";
 
     }
 
+
+
     //1. Если массив с задачами пустой то под формой нужно выводить сообщение об этом
-    if(tasks.length === 0){
-      ifNoTask();
-    }
-
-
+   
 })(tasks);
+
+
+// 3. Добавить функционал отображения незавершенных задач и всех задач. т.е у вас будет две кнопки над 
+// таблицей 1-я "показать все задачи" и 2-я "показать незавершенные задачи", определить завершена задача или 
+// нет можно по полю completed в объекте задачи.  По умолчанию при загрузке отображаются все задачи. 
+// // *Задача со звездочкой. При завершении задачи в разделе "незавершенные задачи" она должна от туда 
+// пропадать и быть видна в разделе "все задачи" при этом во всех задачах завершенные задачи могут быть восстановлены.
+// Также в разделе "все задачи" завершенные задачи должны быть в самом низу после открытых задач.  
 
  
 
