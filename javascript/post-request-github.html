@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Post request</title>
+</head>
+<body>
+	<form  action ="#" method="post"  name = "form">
+		<input id = "name-id" type="text" name="name" value="" placeholder="name" autocomplete="off">
+		<input id ="email-id" type="email" name="email" value="" placeholder="email" autocomplete="off">
+		<input id ="username-id" type="text" name="username" value="" placeholder="username" autocomplete="off">
+		<input id="phone-id" type="tel" name="phone " value="" placeholder="phone number" autocomplete="off">
+		<button id="btn-submit">submit</button>
+	</form>
+	<div class ="cont"></div>
+	<script type="text/javascript">
+
+		// *Создать форму добавления пользователя состоящая из полей name, email, username, phone при сабмите формы сделать POST запрос на сервер после ответа от сервера добавлять полученного пользователя на страницу.
+		let btnSubmit = document.querySelector("#btn-submit");
+		let form = document.querySelector("form");
+		let br = document.createElement("br");
+
+		function createPostRequest(post, callback){
+			const xhr = new XMLHttpRequest();
+			xhr.open("POST","https://jsonplaceholder.typicode.com/posts");
+			xhr.setRequestHeader("Content-type", "application/json");
+			callback(post);
+			xhr.send(JSON.stringify(post)); 
+		};
+		
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			let name = document.querySelector("#name-id");
+			let email = document.querySelector("#email-id");
+			let username = document.querySelector("#username-id");
+			let phone = document.querySelector("#phone-id");
+			const dataForm = {	name: name.value,
+								email: email.value,
+								username:username.value,
+								phone:phone.value
+			};
+			createPostRequest(dataForm, () => {
+				console.log("sended");
+				let div = document.querySelector(".cont");
+				let card = document.createElement("p");
+				div.appendChild(card);
+				card.textContent = `Name:${dataForm.name}\n EMAIL:${dataForm.email}\n USERNAME:${dataForm.username}	Mobile phone number:${dataForm.phone}`;
+				console.log(card.textContent);
+			});
+		});
+	</script>
+</body>
+</html>
