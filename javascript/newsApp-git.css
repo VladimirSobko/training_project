@@ -1,0 +1,47 @@
+body{
+	background: beige;;
+}
+.header-app{
+	background: grey;
+}
+h2 {
+	color: green;
+	text-align: center;
+	width: 100%;
+	height: 50px;
+	font-family: cursive;
+}
+.choice-country{
+	font-family: cursive;
+}
+#search-id{
+	margin-top: 1%;
+	width: 97%;
+}
+label {
+	font-family: cursive;
+	font-size: x-large;
+}
+select{
+	width: 68%;
+}
+#btn-search {
+	margin-top: 2%;
+}
+.app-form{
+	margin: 3%;
+	background: #f8f9fa;
+	width: 33%;
+}
+.news-container{
+	font-size: large;
+	display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+.card{
+	margin: 5%;
+}
+h3 {
+	text-align: center;
+}

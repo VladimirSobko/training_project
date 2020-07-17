@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		NewsApp
+	</title>
+	<link rel="stylesheet" type="text/css" href="newsApp.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="C:\Users\Домашний\Desktop\newspaper.jpg" width="50" height="50" class="d-inline-block align-top" alt="значок газеты">
+    NEWS APPLICATION 
+  </a>
+</nav>
+	<div class="wrap">
+		<div class = "form-container">
+			<form class="app-form" name = "app-form">
+				<label>Search News</label><br>
+				<span class="choice-country">Choice country: </span>
+				<select>
+					<option value = "ua">Ukraine</option>
+					<option value = "ru">Russia</option>
+					<option value = "us">USA</option>
+				</select><br>
+				<input id="search-id" type="text" name="keywords-for-search" value="" placeholder="search news" autocomplete="off">
+				<br><button id="btn-search">Search</button>
+			</form>
+		</div>
+	</div>
+	<h3>Breaking news</h3>
+	<div class="news-container">
+	</div>
+	<script type="text/javascript">
+        
+		const apiKey = "572e97d6cbdb4550932b203f915811fe";
+		const apiURL = "https://news-api-v2.herokuapp.com";
+		let choice = "ua";
+		const select = document.querySelector("select");
+		const searchNews = document.querySelector("#search-id");
+		const form = document.querySelector("form");
+		const blockOfnews = document.querySelector(".news-container");
+
+        //events
+		select.addEventListener("change", function (event){
+				choice = this.value;
+				if(event){
+					blockOfnews.innerHTML = "";
+					getPost();
+				}
+			})
+			
+			form.addEventListener("submit", (event) => {
+				if(event){
+					event.preventDefault();
+					blockOfnews.innerHTML = "";
+					getKeyWordPost();
+					form.reset();
+				}
+			});
+
+		function getPost(){
+			const xhr = new XMLHttpRequest();
+			xhr.open("GET", `${apiURL}/top-headlines?country=${choice}&apiKey=${apiKey}`);
+			xhr.addEventListener("load", () => {
+				const response = JSON.parse(xhr.responseText);
+				try{
+					if(response.status ==="ok"){
+						response.articles.forEach((el) =>{
+							renderNews(el)
+						});
+					}
+				}
+				catch(error){
+					console.log(error);
+				}
+			});
+			xhr.send();
+		};
+		getPost();
+
+		function renderNews(news){
+			const cardOfNews = document.createElement("div");
+			const titleOfNews = document.createElement("h5");
+			const articlesOfNews = document.createElement("p");
+			const imgOfNews = document.createElement("img");
+			blockOfnews.appendChild(cardOfNews);
+			cardOfNews.appendChild(titleOfNews);
+			cardOfNews.appendChild(articlesOfNews);
+			articlesOfNews.textContent = news.description;
+			titleOfNews.textContent = news.title;
+			imgOfNews.setAttribute("src", `${news.urlToImage}`);
+			imgOfNews.setAttribute("max-width", "500px");
+			imgOfNews.classList.add("card-img-top");
+			cardOfNews.appendChild(imgOfNews);
+			cardOfNews.classList.add("card");
+		}
+		
+			function getKeyWordPost(){
+				const xhr = new XMLHttpRequest();
+				xhr.open("GET", `${apiURL}/everything?q=${searchNews.value}&apiKey=${apiKey}`);
+				xhr.addEventListener("load", () => {
+					const response = JSON.parse(xhr.responseText);
+						if(response.status ==="ok"){
+							response.articles.forEach((el) =>{
+								renderNews(el)
+							});
+						}
+				});
+				xhr.send();
+			}
+	</script>
+</body>
+</html>
